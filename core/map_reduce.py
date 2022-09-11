@@ -7,67 +7,6 @@ import xml.etree.ElementTree as ET
 mytree = ET.parse("posts.xml")
 # instance of the root tree
 myroot = mytree.getroot()
-# print(myroot)
-# print(myroot.tag)
-# print(myroot[0].tag)
-# print(myroot[0].attrib)
-# print(myroot[0].attrib["Id"])
-# print(len(myroot))
-
-# master mapper
-# this script iter over xml file,
-# search over the "match_list" (interests attributes (keys values)
-# of rows (dictionary)) and return their content to solve ticket items
-"""
-count = 1
-for n in myroot:
-    count += 1
-#   finding elementes
-    for x in myroot[count].attrib:
-        match_list = ["Id", "PostTypeId", "ParentID", "AcceptedAnswerId",
-                     "CreationDate", "Score", "ViewCount", "Body"]
-        id = None
-        post_type_id = None
-        parent_id = None
-        accepte_answer_id = None
-        creation_date = None
-        score = None
-        view_count = None
-        body = None
-        if x in match_list:
-            if x == "Id":
-                id = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "PostTypeId":
-                post_type_id = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "ParentID":
-                parent_id = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "AcceptedAnswerId":
-                accepte_answer_id = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "CreationDate":
-                creation_date = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "Score":
-                score = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "ViewCount":
-                view_count = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-            elif x == "Body":
-                body = myroot[count].attrib[x]
-                print(f"{x}: \t {myroot[count].attrib[x]}", 1)
-                continue
-"""
 
 # merge sort functions
 
@@ -114,21 +53,6 @@ def merge_two_sorted_lists(a, b, arr):
 
 
 # mapper
-"""
-with open("mapper_out.txt", "w") as file:
-    count = 0
-    for n in myroot:
-        #   finding elementes
-        for x in myroot[count].attrib:
-            match_list = ["Id", "PostTypeId", "ParentID", "AcceptedAnswerId",
-                         "CreationDate", "Score", "ViewCount", "Body"]
-            if x in match_list:
-                if x == "ViewCount":
-                    file.write(f"{myroot[count].attrib[x]}: \t 1\n")
-        count += 1
-    # print(KEY_VALUE_LIST[0][0])
-    file.close()
-"""
 
 # this script return view count and build pair: key value -
 # count, to save on a child list, which append to main list
@@ -160,6 +84,7 @@ with open("mapper_out.txt", "w") as file:
     file.close()
 
 # reducer
+# This script open mapper_out.txt and count the view count repetitions
 line = None
 current_item = None
 current_count = None
@@ -192,7 +117,8 @@ if current_item == item:
     KEY_VALUE_LIST.append([current_item, current_count])
     pass
 
-# print(KEY_VALUE_LIST)
+# this script sorts descending the KEY_VALUE_LIST to obtain the top 10 view count
+# # print(KEY_VALUE_LIST)
 top_viwe_post = KEY_VALUE_LIST[-10:]
 # top_viwe_post = top_viwe_post[::-1]  # corte extendido
 top_viwe_post.reverse()  # método reverse
@@ -212,12 +138,3 @@ for i in range(0, top_limit01):
                 post_id = myroot[row].attrib["Id"]
                 print(f"El post {post_id} está en el top de más vistos")
                 break
-
-"""
-top_limit = len(myroot)
-for row in range(0, top_limit):
-    print(row)
-    # finding elementes
-    #for view in myroot[row].attrib["ViewCount"]:
-        #print(view)
-"""
