@@ -6,6 +6,8 @@ import re
 import statistics as sts
 import lxml.html as LH
 import xml.etree.ElementTree as ET
+import logging
+from logging import config
 from pathlib import Path
 
 # Paths
@@ -38,6 +40,8 @@ def top_view_mapper() -> list:
             post_id = int(myroot[row].attrib["Id"])
             view_count = int(myroot[row].attrib["ViewCount"])
         except ValueError:
+            logging.warning(
+                "Warning : Parameter post_id or view_count is passed as no int value.")
             continue
         KEY_VALUE_LIST.append(
             {"post_id": post_id,
@@ -118,6 +122,8 @@ def word_by_tag_mapper() -> list:
             clean_tag_text = re.sub(r'\W+', ' ', myroot[row].attrib["Tags"])
             clean_tag_text = clean_tag_text.split()
         except KeyError:
+            logging.warning(
+                "Warning : Key Body or Tag doesn't exist.")
             continue
         except LH.etree.ParserError:
             continue
@@ -328,11 +334,15 @@ def response_time_mapper() -> list:
         try:
             accepted_answer_id = int(myroot[row].attrib["AcceptedAnswerId"])
         except KeyError:
+            logging.warning(
+                "Warning : Key AcceptedAnswerId doesn't exist.")
             accepted_answer_id = None
 
         try:
             parent_id = int(myroot[row].attrib["ParentId"])
         except KeyError:
+            logging.warning(
+                "Warning : Key ParentId doesn't exist.")
             parent_id = None
 
         # Append finded elements to dictionary within list of dictionaries.
