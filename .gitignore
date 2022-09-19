@@ -7,3 +7,5 @@ test01(top_word_by_tag).py
 test02(response_time).py
 test03(view_count).py
 test.ipynb
+output_top_view_count.txt
+output_top_words_by_tag.txt
