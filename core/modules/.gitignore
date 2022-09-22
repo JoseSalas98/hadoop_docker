@@ -1,0 +1,4 @@
+# Ignore folders:
+# pycahce
+
+__pycache__

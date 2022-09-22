@@ -1,11 +1,11 @@
-__pycache__
-mapper_out.txt
-posts.xml
-reducer.py
-test_sort.py
-test01(top_word_by_tag).py
-test02(response_time).py
-test03(view_count).py
-test.ipynb
-output_top_view_count.txt
-output_top_words_by_tag.txt
+# Ignore all content in folders except .gitignore files:
+# core/.gitignore
+# core/modules/.gitignore
+# datasets/.gitignore
+# files/.gitignore
+
+!core/.gitignore
+!core/modules/.gitignore
+!datasets/.gitignore
+!files/.gitignore
+

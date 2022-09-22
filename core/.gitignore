@@ -1,0 +1,12 @@
+# Leave out the .gitignore file and folders:
+# modules
+
+!.gitignore
+!modules
+
+# Ignore folders:
+# pycahce
+# .pytest_cache
+
+__pycache__
+.pytest_cache
