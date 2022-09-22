@@ -6,6 +6,8 @@ import re
 import statistics as sts
 import lxml.html as LH
 import xml.etree.ElementTree as ET
+import logging
+from logging import config
 from pathlib import Path
 
 # Paths
@@ -38,6 +40,8 @@ def top_view_mapper() -> list:
             post_id = int(myroot[row].attrib["Id"])
             view_count = int(myroot[row].attrib["ViewCount"])
         except ValueError:
+            logging.warning(
+                "Warning : Parameter post_id or view_count is passed as no int value.")
             continue
         KEY_VALUE_LIST.append(
             {"post_id": post_id,
@@ -54,7 +58,7 @@ def top_view_mapper() -> list:
     return POST_VIEW_COUNT_LIST
 
 
-def top_view_calculator(key_value_list: list) -> object:
+def top_view_calculator(key_value_list: list, out_file_path: str) -> object:
     """This function iter through the key_value_list and 
     find the top 10 most viewed post. 
 
@@ -62,17 +66,16 @@ def top_view_calculator(key_value_list: list) -> object:
         key_value_list (list): Sorted ascending list of dictionaries with format: 
         {"post_id": post_id, 
          "view_count": view_count}.
+        out_file_path (str): Path to output destination dir.
 
     Returns:
         object: Text file with top 10 most viewed posts.
     """
     # Define text file write parameters
-    path = FILES_DIR
-    filename = "output_top_view_count.txt"
-    out_file_path = f"{path}/{filename}"
+    fl_path = out_file_path
     mode = "w"
     encoding = "utf-8"
-    with open(file=out_file_path, mode=mode, encoding=encoding) as file:
+    with open(file=fl_path, mode=mode, encoding=encoding) as file:
         post_id = None
         view_count = None
         for dictionary in key_value_list:
@@ -118,6 +121,8 @@ def word_by_tag_mapper() -> list:
             clean_tag_text = re.sub(r'\W+', ' ', myroot[row].attrib["Tags"])
             clean_tag_text = clean_tag_text.split()
         except KeyError:
+            logging.warning(
+                "Warning : Key Body or Tag doesn't exist.")
             continue
         except LH.etree.ParserError:
             continue
@@ -193,7 +198,7 @@ def word_by_tag_reducer(key_value_list: list) -> list:
     return WORD_BY_CATEGORY
 
 
-def top_word_by_tag_calculator(key_value_list: list) -> object:
+def top_word_by_tag_calculator(key_value_list: list, out_file_path: str) -> object:
     """This function iter through a list of dictionaries and calculate
     the top 10 most repeated words by tag.
 
@@ -202,6 +207,7 @@ def top_word_by_tag_calculator(key_value_list: list) -> object:
         format: {"post_tag": post_tag, 
         "post_body_word": post_body_word, 
         "count": count}
+        out_file_path (str): Path to output destination dir.
 
     Returns:
         object: Text file with top 10 most repeated words by tag.
@@ -247,13 +253,11 @@ def top_word_by_tag_calculator(key_value_list: list) -> object:
             counter += 1
 
     # Define text file write parameters
-    path = FILES_DIR
-    filename = "output_top_words_by_tag.txt"
-    out_file_path = f"{path}/{filename}"
+    fl_path = out_file_path
     mode = "w"
     encoding = "utf-8"
 
-    with open(file=out_file_path, mode=mode, encoding=encoding) as file:
+    with open(file=fl_path, mode=mode, encoding=encoding) as file:
         for dictionary in top_word_by_category:
             post_tag = dictionary["post_tag"]
             post_body_word = dictionary["post_body_word"]
@@ -328,11 +332,15 @@ def response_time_mapper() -> list:
         try:
             accepted_answer_id = int(myroot[row].attrib["AcceptedAnswerId"])
         except KeyError:
+            logging.warning(
+                "Warning : Key AcceptedAnswerId doesn't exist.")
             accepted_answer_id = None
 
         try:
             parent_id = int(myroot[row].attrib["ParentId"])
         except KeyError:
+            logging.warning(
+                "Warning : Key ParentId doesn't exist.")
             parent_id = None
 
         # Append finded elements to dictionary within list of dictionaries.
