@@ -58,7 +58,7 @@ def top_view_mapper() -> list:
     return POST_VIEW_COUNT_LIST
 
 
-def top_view_calculator(key_value_list: list) -> object:
+def top_view_calculator(key_value_list: list, out_file_path: str) -> object:
     """This function iter through the key_value_list and 
     find the top 10 most viewed post. 
 
@@ -66,17 +66,16 @@ def top_view_calculator(key_value_list: list) -> object:
         key_value_list (list): Sorted ascending list of dictionaries with format: 
         {"post_id": post_id, 
          "view_count": view_count}.
+        out_file_path (str): Path to output destination dir.
 
     Returns:
         object: Text file with top 10 most viewed posts.
     """
     # Define text file write parameters
-    path = FILES_DIR
-    filename = "output_top_view_count.txt"
-    out_file_path = f"{path}/{filename}"
+    fl_path = out_file_path
     mode = "w"
     encoding = "utf-8"
-    with open(file=out_file_path, mode=mode, encoding=encoding) as file:
+    with open(file=fl_path, mode=mode, encoding=encoding) as file:
         post_id = None
         view_count = None
         for dictionary in key_value_list:
@@ -199,7 +198,7 @@ def word_by_tag_reducer(key_value_list: list) -> list:
     return WORD_BY_CATEGORY
 
 
-def top_word_by_tag_calculator(key_value_list: list) -> object:
+def top_word_by_tag_calculator(key_value_list: list, out_file_path: str) -> object:
     """This function iter through a list of dictionaries and calculate
     the top 10 most repeated words by tag.
 
@@ -208,6 +207,7 @@ def top_word_by_tag_calculator(key_value_list: list) -> object:
         format: {"post_tag": post_tag, 
         "post_body_word": post_body_word, 
         "count": count}
+        out_file_path (str): Path to output destination dir.
 
     Returns:
         object: Text file with top 10 most repeated words by tag.
@@ -253,13 +253,11 @@ def top_word_by_tag_calculator(key_value_list: list) -> object:
             counter += 1
 
     # Define text file write parameters
-    path = FILES_DIR
-    filename = "output_top_words_by_tag.txt"
-    out_file_path = f"{path}/{filename}"
+    fl_path = out_file_path
     mode = "w"
     encoding = "utf-8"
 
-    with open(file=out_file_path, mode=mode, encoding=encoding) as file:
+    with open(file=fl_path, mode=mode, encoding=encoding) as file:
         for dictionary in top_word_by_category:
             post_tag = dictionary["post_tag"]
             post_body_word = dictionary["post_body_word"]
